@@ -1,0 +1,59 @@
+name: SuperKart MLOps Pipeline
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  data_prep:
+    name: Data Preparation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install -r requirements.txt
+      - run: python scripts/data_prep.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: processed-data
+          path: superkart/data/
+  model_train:
+    name: Model Training
+    runs-on: ubuntu-latest
+    needs: data_prep
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: processed-data
+          path: superkart/data/
+      - run: python scripts/train.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: superkart/model/
+  deploy:
+    name: Deploy to HF Spaces
+    runs-on: ubuntu-latest
+    needs: model_train
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install -r requirements.txt
+      - run: python scripts/deploy.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
