@@ -52,8 +52,8 @@ with open("superkart/model/encoders.pkl","wb") as f: pickle.dump(le_dict, f)
 for fname in ["train.csv","test.csv"]:
     api.upload_file(path_or_fileobj=f"superkart/data/{fname}",
                     path_in_repo=f"data/{fname}",
-                    repo_id=DATASET_REPO, repo_type="dataset", token=HF_TOKEN)
+                    repo_id=DATASET_REPO, repo_type="dataset", token=hf_token)
 api.upload_file(path_or_fileobj="superkart/model/encoders.pkl",
                 path_in_repo="encoders.pkl",
-                repo_id=f"{hf_username}/superkart-model", repo_type="model", token=HF_TOKEN)
+                repo_id=f"{hf_username}/superkart-model", repo_type="model", token=hf_token)
 print("Data prep done.")
