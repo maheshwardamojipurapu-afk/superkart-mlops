@@ -5,8 +5,23 @@ from sklearn.metrics import mean_squared_error, r2_score
 from xgboost import XGBRegressor
 from datasets import load_dataset
 from huggingface_hub import HfApi, login, create_repo
-HF_TOKEN     = os.environ["HF_TOKEN"]
-HF_USERNAME  = os.environ["HF_USERNAME"]
+import os
+import sys
+
+# Validate required secrets
+hf_token = os.getenv("HF_TOKEN", "").strip()
+hf_username = os.getenv("HF_USERNAME", "").strip()
+
+if not hf_token:
+    print("ERROR: HF_TOKEN environment variable is not set or is empty")
+    sys.exit(1)
+
+if not hf_username:
+    print("ERROR: HF_USERNAME environment variable is not set or is empty")
+    sys.exit(1)
+
+print(f"✓ Using HF_USERNAME: {hf_username}")
+print("✓ HF_TOKEN is set")
 DATASET_REPO = f"{HF_USERNAME}/superkart-sales-forecast"
 MODEL_REPO   = f"{HF_USERNAME}/superkart-model"
 login(token=HF_TOKEN); api = HfApi()
