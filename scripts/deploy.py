@@ -8,13 +8,13 @@ if not hf_token:
 if not hf_username:
     raise ValueError("HF_USERNAME secret is not set or is empty")
 
-SPACE_REPO  = f"{HF_USERNAME}/superkart-streamlit"
-login(token=HF_TOKEN); api = HfApi()
+SPACE_REPO  = f"{hf_username}/superkart-streamlit"
+login(token=hf_token); api = HfApi()
 try: create_repo(SPACE_REPO, repo_type="space", space_sdk="streamlit",
                  exist_ok=True, token=HF_TOKEN)
 except: pass
 for f in ["app.py","requirements.txt","Dockerfile"]:
     api.upload_file(path_or_fileobj=f, path_in_repo=f,
-                    repo_id=SPACE_REPO, repo_type="space", token=HF_TOKEN)
+                    repo_id=SPACE_REPO, repo_type="space", token=hf_token)
     print(f"Deployed {f}")
 print(f"Live: [huggingface.co](https://huggingface.co/spaces/{SPACE_REPO})")
