@@ -1,8 +1,13 @@
-
 import os
-from huggingface_hub import HfApi, login, create_repo
-HF_TOKEN    = os.environ["HF_TOKEN"]
-HF_USERNAME = os.environ["HF_USERNAME"]
+
+hf_token = os.getenv('HF_TOKEN', '').strip()
+hf_username = os.getenv('HF_USERNAME', '').strip()
+
+if not hf_token:
+    raise ValueError("HF_TOKEN secret is not set or is empty")
+if not hf_username:
+    raise ValueError("HF_USERNAME secret is not set or is empty")
+
 SPACE_REPO  = f"{HF_USERNAME}/superkart-streamlit"
 login(token=HF_TOKEN); api = HfApi()
 try: create_repo(SPACE_REPO, repo_type="space", space_sdk="streamlit",
