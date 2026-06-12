@@ -23,8 +23,8 @@ if not hf_username:
 
 print(f"✓ Using HF_USERNAME: {hf_username}")
 print("✓ HF_TOKEN is set")
-DATASET_REPO = f"{HF_USERNAME}/superkart-sales-forecast"
-login(token=HF_TOKEN)
+DATASET_REPO = f"{hf_username}}/superkart-sales-forecast"
+login(token=hf_token)
 api = HfApi()
 df = load_dataset(DATASET_REPO, data_files="data/superkart_raw.csv", split="train").to_pandas()
 df['Product_Sugar_Content'] = df['Product_Sugar_Content'].str.strip()
@@ -55,5 +55,5 @@ for fname in ["train.csv","test.csv"]:
                     repo_id=DATASET_REPO, repo_type="dataset", token=HF_TOKEN)
 api.upload_file(path_or_fileobj="superkart/model/encoders.pkl",
                 path_in_repo="encoders.pkl",
-                repo_id=f"{HF_USERNAME}/superkart-model", repo_type="model", token=HF_TOKEN)
+                repo_id=f"{hf_username}/superkart-model", repo_type="model", token=HF_TOKEN)
 print("Data prep done.")
