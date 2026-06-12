@@ -23,7 +23,7 @@ if not hf_username:
 
 print(f"✓ Using HF_USERNAME: {hf_username}")
 print("✓ HF_TOKEN is set")
-DATASET_REPO = f"{hf_username}}/superkart-sales-forecast"
+DATASET_REPO = f"{hf_username}/superkart-sales-forecast"
 login(token=hf_token)
 api = HfApi()
 df = load_dataset(DATASET_REPO, data_files="data/superkart_raw.csv", split="train").to_pandas()
